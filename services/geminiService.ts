@@ -32,8 +32,16 @@ const getQuestionTypePriority = (type: QuestionType): number => {
   }
 };
 
+const getApiKey = () => {
+  const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+  if (!apiKey) {
+    throw new Error('يرجى ضبط متغير البيئة GEMINI_API_KEY للاتصال بنموذج Gemini.');
+  }
+  return apiKey;
+};
+
 export const generateExamContent = async (config: GenerateConfig): Promise<ExamData> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
   let pageInstruction = "";
   if (config.sourcePdf && config.pdfPageRange) {
@@ -190,7 +198,7 @@ export const generateExamContent = async (config: GenerateConfig): Promise<ExamD
 };
 
 export const translateExam = async (examData: ExamData): Promise<ExamData> => {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: getApiKey() });
     // This is a simplified implementation. Real-world would check each field.
     const prompt = `
       Translate the following exam JSON object from Arabic to English. 
@@ -214,10 +222,10 @@ export const translateExam = async (examData: ExamData): Promise<ExamData> => {
 
 
 export const gradeStudentSheet = async (
-  sheetImageBase64: string, 
+  sheetImageBase64: string,
   examData: ExamData
 ): Promise<GradingResult> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
   
   // Prepare answer key summary for the model
   const answerKey = examData.questions.map(q => ({
