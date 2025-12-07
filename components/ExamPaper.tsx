@@ -15,7 +15,7 @@ interface Props {
 const ExamPaper: React.FC<Props> = ({ data, header, mode, theme, settings, isEditing, onUpdateQuestion }) => {
   
   // QR Code now points to a verification URL
-  const qrCodeData = `https://maad.app/verify/${data.id}?ver=${data.version}`;
+  const qrCodeData = `https:/moed.netlify.app/verify/${data.id}?ver=${data.version}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrCodeData)}`;
 
   const getThemeStyles = () => {
