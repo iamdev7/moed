@@ -305,7 +305,10 @@ const App: React.FC = () => {
       setViewMode('student');
     } catch (error) {
       console.error(error);
-      alert("حدث خطأ أثناء توليد الاختبار. يرجى التأكد من المصادر والمحاولة مرة أخرى.");
+      const message = error instanceof Error
+        ? error.message
+        : "حدث خطأ أثناء توليد الاختبار. يرجى التأكد من المصادر والمحاولة مرة أخرى.";
+      alert(message);
       setStep('content');
     } finally {
       setLoading(false);
